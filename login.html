@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+
+<head>
+    <meta charset="UTF-8">
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <title> mchan.us MCN Build Server Map 로그인 </title>
+    <link rel="icon" href="images/dynmap.ico" type="image/ico">
+
+    <link rel="stylesheet" type="text/css" href="css/leaflet.css?_=3.0-beta-10-257">
+    <link rel="stylesheet" type="text/css" href="css/standalone.css?_=3.0-beta-10-257" media="screen">
+    <link rel="stylesheet" type="text/css" href="css/dynmap_style.css?_=3.0-beta-10-257" media="screen">
+    <script type="text/javascript" src="standalone/config.js?_=3.0-beta-10-257"></script>
+    <script type="text/javascript" src="js/jquery-1.11.0.js?_=3.0-beta-10-257"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var status = $('#status_message');
+            if (window.location.href.indexOf('error=loginfailed') >= 0)
+                $('<div/>').text('로그인 실패 ').appendTo(status);
+            $('form')[0].setAttribute('action', config.url.login);
+            document.forms['login'].elements['j_username'].focus();
+        });
+
+        $(function() {
+            $('form[name=login]').submit(function() {
+                $.post($(this).attr('action'), $(this).serialize(), function(json) {
+                    if (json.result == 'success')
+                        window.location = 'index.html';
+                    else
+                        window.location = 'login.html?error=' + json.result;
+                }, 'json');
+                return false;
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+    <div class="dynmaplogin">
+        <div class="bfc3">
+            <div class="bfc2">
+                <div class="bfc">
+                    <div class="backtobox">
+                        <div class="backtobutton">
+                            <a href="https://mcn.mchan.us/">
+                                <button class="backto">
+                                    <img src="/images/arrow.svg" class="arrow">
+                                </button>
+                            </a>
+                        </div>
+                        <div class="backtoheader">
+                            <p class="backp">MCN으로 돌아가기</p>
+                        </div>
+                    </div>
+                    <div class="loginregister loginbox">
+                        <div class="loginheade">
+                            <img style="width:40%;image-rendering: auto;" src="/images/buildservermap.png">
+                            <h2>로그인</h2>
+                            <h3>Minecraft 닉네임과 비밀번호를 입력하세요</h3>
+                        </div>
+                        <div id="status_message" class="statusmessage"></div>
+                        <div>
+                            <div class='login'>
+                                <FORM METHOD=POST name=login ACTION="up/login">
+                                    <div class="inputboxes">
+                                        <div>
+                                            <div class="leftalign"><input class="nick" type="text" size="20" name="j_username" placeholder="Minecraft 닉네임"></div>
+                                        </div>
+                                        <br>
+                                        <div>
+                                            <div class="leftalign"><input class="pw" type="password" size="20" name="j_password" placeholder="비밀번호"></div>
+                                        </div>
+                                    </div>
+                                    <br><br>
+                                    <a href="/register.html">
+                                        <div class="regbutton">
+                                            <p class="regp">회원가입</p>
+                                        </div>
+                                    </a>
+                                    <input class="submitbutton" type="submit" name="login" value="로그인">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
